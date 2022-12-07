@@ -343,7 +343,7 @@ class Bot:
                 received = i['received']
                 result = i['result']
                 time = self.tm()
-                print('{}{} - {}: З - {} : П - {} : ИТОГ - {}{}'.format(
+                print('{}{} - {}: In - {} : Ex - {} : ИТОГ - {}{}'.format(
                     gr, time, symbol, zatrat, received, result, sbros))
 
     def check_profit(self, df, para):
