@@ -6,9 +6,9 @@ exchange = 'Kucoin.com'
 
 # Подключение к API биржи Kucoin.com
 
-kucoin_key = '638f7f618cb72f000114d9f9'
-kucoin_secret = 'f2010002-c830-4995-81ab-8c77d347088a'
-kucoin_pasw = '710602dd'
+kucoin_key = ''
+kucoin_secret = ''
+kucoin_pasw = ''
 
 '''
 ['MHC-ETH', 'MHC-BTC', 'LOKI-BTC', 'LOKI-ETH', 'NRG-BTC', 'AVA-USDT', 'FET-BTC', 'FET-ETH', 
