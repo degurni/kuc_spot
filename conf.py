@@ -174,19 +174,20 @@ kucoin_pasw = ''
 'NRFB-USDT', 'NRFB-BTC', 'HIGAZERS-USDT', 'NAVI-USDT', 'CARE-USDT', 'CLUB-USDT', 'HIPENGUINS-USDT', 'ALT-USDT']
 
 '''
-whait_list = ['ATOM-BTC', 'KLAY-BTC', 'DOT-USDT', 'LUNA-USDT', 'AVAX-BTC']
+whait_list = ['ATOM-USDT', 'DOT-USDT', 'LUNA-USDT', 'SOL-USDT']
 
-tf = '5min'
+tf = '5min'  # 1min, 3min, 5min, 15min, 30min, 1hour, 2hour, 4hour, 6hour, 8hour, 12hour, 1day, 1week
 
 size_usd = 1  # Размер ордера в USD
-max_poz = 5     # Количество одновременных позиций
+max_poz = 2  # Количество одновременных позиций
 navar = 0.5  # %
-perc_mod_price = 2  # 2%
+perc_mod_price = 5  # 5%
 
 # Настройка индикатора CCI
 predel_cci = 100
 
 debug = 'debug'
+sum_result = True
 # паузы
 sleep = 20  # секунд между циклами запросов
-sl = 1  # секунд между запросами
+sl = 5  # секунд между запросами
