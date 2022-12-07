@@ -182,39 +182,28 @@ class Bot:
         '''
         kol_poz = 0
         for i in conf.whait_list:
+            # Если файла с ордерами нет, то создаём его в папке <stock> и заполняем пустым списком
             if not os.path.isfile('stock/{}.json'.format(i)):
                 Bot().write_json([], i)
-            else:
+            else  :# Если есть, подсчитываем кол-во открытых позиций
                 data = Bot().read_json(i)
                 if len(data) > 0:
                     kol_poz += 1
+        # Если нет файла с результатами торгов, то создаём его
         if not os.path.isfile('stock/{}.json'.format('result')):
             res = []
             for i in conf.whait_list:
-                inf = {
-                    'symbol': i,
-                    'zatrat': 0,
-                    'received': 0,
-                    'fee': 0,
-                    'result': 0
-                }
+                inf = {'symbol': i, 'result': 0}
                 res.append(inf)
-        else:
+        else:  # Если есть проверяем
             res = Bot().read_json('result')
-
             for i in conf.whait_list:
                 nal = False
                 for j in res:
                     if i == j['symbol']:
                         nal = True
                 if not nal:
-                    res.append({
-                        'symbol': i,
-                        'zatrat': 0,
-                        'received': 0,
-                        'fee': 0,
-                        'result': 0
-                    })
+                    res.append({'symbol': i, 'result': 0})
         Bot().write_json(res, 'result')
         return kol_poz
 
@@ -336,15 +325,14 @@ class Bot:
         gr = '\033[32m'
         sbros = '\033[0m'
         kr = '\033[31m'
+        color = gr
         data = Bot().read_json(para='result')
         for i in data:
             if i['symbol'] == symbol:
-                zatrat = i['zatrat']
-                received = i['received']
                 result = i['result']
-                time = self.tm()
-                print('{}{} - {}: In - {} : Ex - {} : ИТОГ - {}{}'.format(
-                    gr, time, symbol, zatrat, received, result, sbros))
+                if result < 0:
+                    color = kr
+                print('{}{}: Total: {}{}{}'.format(gr, symbol, color, result, sbros))
 
     def check_profit(self, df, para):
         k = False
@@ -391,9 +379,7 @@ class Bot:
             data.append(inf)
             for i in res:
                 if i['symbol'] == symbol:
-                    i['zatrat'] += float(inf_order['dealFunds'])
-                    i['fee'] += float(inf_order['fee'])
-                    i['result'] += (float(inf_order['dealFunds']) + float(inf_order['fee']))
+                    i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
         elif side == 'sell':
             data.pop(-1)
             if len(data) == 0:
@@ -401,23 +387,18 @@ class Bot:
                 for i in res:
                     if i['symbol'] == symbol:
                         if conf.sum_result:
-                            i['zatrat'] -= float(inf_order['dealFunds'])
-                            i['fee'] -= float(inf_order['fee'])
-                            i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
+                            i['result'] -= float(inf_order['dealFunds'])
+                            i['result'] += float(inf_order['fee'])
                         else:
-                            i['zatrat'] = 0
-                            i['received'] = 0
-                            i['fee'] = 0
                             i['result'] = 0
             else:
-                data[0]['mod_price'] = data[0]['mod_price'] - data[0]['mp']
+                data[0]['mod_price'] -= data[0]['mp']
                 if data[0]['mod_price'] <= 0:
                     order_id = api.create_order(symbol=symbol, side=side, size=data[-1]['size'])['orderId']
                     inf_order = api.order_details(order_id=order_id)
                     for i in res:
-                        i['zatrat'] -= float(inf_order['dealFunds'])
-                        i['fee'] -= float(inf_order['fee'])
-                        i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
+                        i['result'] -= float(inf_order['dealFunds'])
+                        i['result'] += float(inf_order['fee'])
                     data.pop(0)
                 if len(data) == 0:
                     p = True
@@ -448,7 +429,7 @@ class Bot:
         if not hav_balance:
             Bot().debug('error', 'Необходимо пополнить баланс {}'.format(symbol_infa['quoteCurrency']))
         else:
-            # size = symbol_infa['baseMinSize']  # Выставляем начальный ордер
+            # Выставляем начальный ордер
             order_id = api.create_order(symbol=symbol, side=side, size=size)['orderId']
             inf_order = api.order_details(order_id=order_id)
             made_price = float(inf_order['dealFunds']) / float(inf_order['size'])  # цена исполнения ордера
@@ -467,11 +448,9 @@ class Bot:
             data.append(inf)
             Bot().write_json(data=data, para=inf_order['symbol'])
             res = Bot().read_json('result')
-            for i in data:
+            for i in res:
                 if i['symbol'] == inf_order['symbol']:
-                    i['zatrat'] = float(inf_order['dealFunds'])
-                    i['fee'] = float(inf_order['fee'])
-                    i['result'] = float(inf_order['dealFunds']) + float(inf_order['fee'])
+                    i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
                     Bot().write_json(data=res, para='result')
             return True
 

@@ -8,17 +8,18 @@ from classes import Bot
 
 bot = Bot()
 def kuc_spot():
+    # для отслеживания времени работы скрипта и максимального количества ордеров
     start_time = datetime.now()
     max_zakaz = 0
-    paras = conf.whait_list
+    paras = conf.whait_list  # Список возможных пар для торговли
     kol_poz = bot.is_file_json()  # Проверяем наличие вспомогательных файлов
 
     while True:
-        if kol_poz < conf.max_poz:
+        if kol_poz < conf.max_poz:  # Если открытых позиций меньше допустимого
             for para in paras:
                 if kol_poz >= conf.max_poz:
                     break
-                if len(bot.read_json(para)) == 0:
+                if len(bot.read_json(para)) == 0:  # Если позиция по торговой паре ещё не открыта
                     bot.debug('debug', '{}: Позиция ещё не открыта'.format(para))
                     df = bot.create_df(symbol=para)  # создаём датафрейм с последними свечами и сигналами индикаторов
                     if df.CCI[-2] < df.CCI[-1] < (conf.predel_cci * -1):
@@ -38,7 +39,7 @@ def kuc_spot():
 
 
 
-        print('=' * 75)
+        print('=' * 60)
         for para in paras:
             data = bot.read_json(para)
             if max_zakaz < len(data):
