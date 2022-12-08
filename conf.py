@@ -178,7 +178,7 @@ whait_list = ['ATOM-USDT', 'TON-USDT', 'DOT-USDT', 'LUNA-USDT', 'SOL-USDT']
 
 tf = '5min'  # 1min, 3min, 5min, 15min, 30min, 1hour, 2hour, 4hour, 6hour, 8hour, 12hour, 1day, 1week
 
-size_usd = 1  # Размер ордера в USD
+size_usd = 2  # Размер ордера в USD
 max_poz = 3  # Количество одновременных позиций
 navar = 0.5  # %
 perc_mod_price = 5  # 5%
