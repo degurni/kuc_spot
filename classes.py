@@ -381,6 +381,8 @@ class Bot:
                 if i['symbol'] == symbol:
                     i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
         elif side == 'sell':
+            print(inf_order)
+            print(inf_order['dealFunds'])
             data.pop(-1)
             data[0]['mod_price'] -= data[0]['mp']
             if data[0]['mod_price'] <= 0:
