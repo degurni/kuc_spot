@@ -387,8 +387,8 @@ class Bot:
                 for i in res:
                     if i['symbol'] == symbol:
                         if conf.sum_result:
-                            i['result'] -= float(inf_order['dealFunds'])
-                            i['result'] += float(inf_order['fee'])
+                            i['result'] += float(inf_order['dealFunds'])
+                            i['result'] -= float(inf_order['fee'])
                         else:
                             i['result'] = 0
             else:
@@ -397,8 +397,8 @@ class Bot:
                     order_id = api.create_order(symbol=symbol, side=side, size=data[-1]['size'])['orderId']
                     inf_order = api.order_details(order_id=order_id)
                     for i in res:
-                        i['result'] -= float(inf_order['dealFunds'])
-                        i['result'] += float(inf_order['fee'])
+                        i['result'] += float(inf_order['dealFunds'])
+                        i['result'] -= float(inf_order['fee'])
                     data.pop(0)
                 if len(data) == 0:
                     p = True
