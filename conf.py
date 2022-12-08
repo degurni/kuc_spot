@@ -174,7 +174,7 @@ kucoin_pasw = ''
 'NRFB-USDT', 'NRFB-BTC', 'HIGAZERS-USDT', 'NAVI-USDT', 'CARE-USDT', 'CLUB-USDT', 'HIPENGUINS-USDT', 'ALT-USDT']
 
 '''
-whait_list = ['ATOM-USDT', 'TON-USDT', 'DOT-USDT', 'LUNA-USDT', 'SOL-USDT']
+whait_list = ['ATOM-USDT', 'TON-USDT', 'DOT-USDT', 'LUNA-USDT', 'SOL-USDT', 'SHIB-USDT', 'LUNC-USDT', 'VRA-USDT']
 
 tf = '5min'  # 1min, 3min, 5min, 15min, 30min, 1hour, 2hour, 4hour, 6hour, 8hour, 12hour, 1day, 1week
 

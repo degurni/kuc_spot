@@ -441,7 +441,7 @@ class Bot:
                    'fee': inf_order['fee'],
                    'price': made_price,
                    'zatrat': inf_order['dealFunds'],
-                   'tick_size': symbol_infa['baseIncrement'],
+                   'tick_size': symbol_infa['quoteIncrement'],
                    'mod_price': made_price,
                    'mp': made_price / 100 * conf.perc_mod_price}
             data = Bot().read_json(para=inf_order['symbol'])
