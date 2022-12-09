@@ -381,12 +381,19 @@ class Bot:
                 if i['symbol'] == symbol:
                     i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
         elif side == 'sell':
-            data.pop(-1)
             for i in res:
                 if i['symbol'] == symbol:
                     i['result'] += float(inf_order['dealFunds'])
                     i['result'] -= float(inf_order['fee'])
-            data[0]['mod_price'] -= data[0]['mp']
+            if len(data) == 0:
+                p = True
+                for i in res:
+                    if i['symbol'] == symbol:
+                        if not conf.sum_result:
+                            i['result'] = 0
+            else:
+                data[0]['mod_price'] -= data[0]['mp']
+            data.pop(-1)
             if data[0]['mod_price'] <= 0:
                 order_id = api.create_order(symbol=symbol, side=side, size=data[-1]['size'])['orderId']
                 inf_order = api.order_details(order_id=order_id)
@@ -395,12 +402,6 @@ class Bot:
                         i['result'] += float(inf_order['dealFunds'])
                         i['result'] -= float(inf_order['fee'])
                 data.pop(0)
-            if len(data) == 0:
-                p = True
-                for i in res:
-                    if i['symbol'] == symbol:
-                        if not conf.sum_result:
-                            i['result'] = 0
         Bot().write_json(data=data, para=symbol)
         Bot().write_json(data=res, para='result')
         return p
