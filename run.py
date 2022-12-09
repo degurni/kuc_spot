@@ -49,7 +49,6 @@ def kuc_spot():
             bot.debug('inform', 'Работа бота завершена')
             sys.exit(0)
         except Exception as e:
-            print(type(e))
             bot.debug('inform', 'Возникла непредвиденная ошибка - {}'.format(e))
             time.sleep(conf.sleep)
             bot.debug('inform', 'Перезапускаюсь...')

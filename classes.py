@@ -365,11 +365,12 @@ class Bot:
         order_id = api.create_order(symbol=symbol, side=side, size=data[-1]['size'])['orderId']
         inf_order = api.order_details(order_id=order_id)
         made_price = float(inf_order['dealFunds']) / float(inf_order['size'])  # цена исполнения ордера
-        if side == 'buy':
+        print(side)
+        if inf_order['side'] == 'buy':
             inf = {'id': inf_order['id'],
                    'symbol': inf_order['symbol'],
                    'coin': data[-1]['coin'],
-                   'size': data[-1]['size'],
+                   'size': inf_order['size'],
                    'fee': inf_order['fee'],
                    'price': made_price,
                    'zatrat': inf_order['dealFunds'],
@@ -380,7 +381,7 @@ class Bot:
             for i in res:
                 if i['symbol'] == symbol:
                     i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
-        elif side == 'sell':
+        elif inf_order['side'] == 'sell':
             for i in res:
                 if i['symbol'] == symbol:
                     i['result'] += float(inf_order['dealFunds'])
@@ -393,7 +394,6 @@ class Bot:
                             i['result'] = 0
             else:
                 data[0]['mod_price'] -= data[0]['mp']
-            data.pop(-1)
             if data[0]['mod_price'] <= 0:
                 order_id = api.create_order(symbol=symbol, side=side, size=data[-1]['size'])['orderId']
                 inf_order = api.order_details(order_id=order_id)
@@ -402,6 +402,7 @@ class Bot:
                         i['result'] += float(inf_order['dealFunds'])
                         i['result'] -= float(inf_order['fee'])
                 data.pop(0)
+            data.pop(-1)
         Bot().write_json(data=data, para=symbol)
         Bot().write_json(data=res, para='result')
         return p
@@ -453,7 +454,6 @@ class Bot:
                     i['result'] -= (float(inf_order['dealFunds']) + float(inf_order['fee']))
                     Bot().write_json(data=res, para='result')
             return True
-
 
 
 
