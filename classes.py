@@ -54,6 +54,8 @@ class Kucoin_spot:
         time.sleep(conf.sl)
         return self.market.get_kline(symbol=symbol, kline_type=self.tf)
 
+
+
     def get_symbol_list(self):
         '''
         Получаем информацию о торговых парах
@@ -142,6 +144,7 @@ class Kucoin_spot:
 
 if conf.exchange == 'Kucoin.com':
     api = Kucoin_spot()
+
 elif conf.exchange == 'Gate.io':
     api = Gate_spot()
 
@@ -365,7 +368,7 @@ class Bot:
         order_id = api.create_order(symbol=symbol, side=side, size=data[-1]['size'])['orderId']
         inf_order = api.order_details(order_id=order_id)
         made_price = float(inf_order['dealFunds']) / float(inf_order['size'])  # цена исполнения ордера
-        print(side)
+        # print(side)
         if inf_order['side'] == 'buy':
             inf = {'id': inf_order['id'],
                    'symbol': inf_order['symbol'],
